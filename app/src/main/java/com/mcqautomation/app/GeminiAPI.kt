@@ -13,7 +13,7 @@ import java.io.IOException
 class GeminiAPI(private val context: Context) {
 
     companion object {
-        private const val API_KEY = "your_api_key_here" // Replace with actual API key
+        private const val API_KEY = "AIzaSyCvumJ9cr2Vd4k_q3S_Q9rK9Q2pAs5A2KU" // Replace with actual API key
         private const val BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent"
     }
 
