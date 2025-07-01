@@ -207,3 +207,115 @@ class FloatingButtonService : Service() {
         }
     }
 }
+package com.mcqautomation.app
+
+import android.app.Service
+import android.content.Intent
+import android.graphics.PixelFormat
+import android.os.Build
+import android.os.IBinder
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.Toast
+
+class FloatingButtonService : Service() {
+    
+    private var windowManager: WindowManager? = null
+    private var floatingView: View? = null
+    private var playButton: ImageButton? = null
+    private var settingsButton: ImageButton? = null
+    private var optionButtonsContainer: LinearLayout? = null
+    
+    override fun onCreate() {
+        super.onCreate()
+        
+        windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        
+        // Inflate the floating layout
+        floatingView = LayoutInflater.from(this).inflate(R.layout.floating_buttons_layout, null)
+        
+        // Initialize buttons
+        playButton = floatingView?.findViewById(R.id.playButton)
+        settingsButton = floatingView?.findViewById(R.id.settingsButton)
+        optionButtonsContainer = floatingView?.findViewById(R.id.optionButtonsContainer)
+        
+        // Set up button click listeners
+        setupButtonListeners()
+        
+        // Set up window layout parameters
+        val layoutFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else {
+            WindowManager.LayoutParams.TYPE_PHONE
+        }
+        
+        val params = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            layoutFlag,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
+        
+        params.gravity = Gravity.TOP or Gravity.START
+        params.x = 0
+        params.y = 100
+        
+        try {
+            // Add the view to window manager
+            windowManager?.addView(floatingView, params)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error creating floating button: ${e.message}", Toast.LENGTH_LONG).show()
+            stopSelf()
+        }
+    }
+    
+    private fun setupButtonListeners() {
+        playButton?.setOnClickListener {
+            // Handle play button click
+            Toast.makeText(this, "Play button clicked", Toast.LENGTH_SHORT).show()
+            // Add your MCQ automation logic here
+        }
+        
+        settingsButton?.setOnClickListener {
+            // Handle settings button click
+            Toast.makeText(this, "Settings button clicked", Toast.LENGTH_SHORT).show()
+            // Toggle option buttons visibility or open settings
+            toggleOptionButtons()
+        }
+    }
+    
+    private fun toggleOptionButtons() {
+        optionButtonsContainer?.let { container ->
+            if (container.visibility == View.VISIBLE) {
+                container.visibility = View.GONE
+            } else {
+                container.visibility = View.VISIBLE
+            }
+        }
+    }
+    
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return START_STICKY
+    }
+    
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            floatingView?.let { view ->
+                windowManager?.removeView(view)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
