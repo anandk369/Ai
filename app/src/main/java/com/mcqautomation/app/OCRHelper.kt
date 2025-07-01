@@ -51,11 +51,18 @@ class OCRHelper(private val context: Context) {
             try {
                 val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                 val displayMetrics = DisplayMetrics()
-                windowManager.defaultDisplay.getMetrics(displayMetrics)
+                
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    val bounds = windowManager.currentWindowMetrics.bounds
+                    displayMetrics.widthPixels = bounds.width()
+                    displayMetrics.heightPixels = bounds.height()
+                } else {
+                    @Suppress("DEPRECATION")
+                    windowManager.defaultDisplay.getMetrics(displayMetrics)
+                }
                 
                 val width = displayMetrics.widthPixels
                 val height = displayMetrics.heightPixels
-                val density = displayMetrics.densityDpi
                 
                 imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 1)
                 
