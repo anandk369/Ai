@@ -69,25 +69,22 @@ jobs:
         name: release-apk
         path: app/build/outputs/apk/release/app-release-unsigned.apk
 
+    - name: 🛠 Install GitHub CLI
+      uses: cli/cli-action@v2
+
     - name: 🚀 Create GitHub Release
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      id: create_release
-      uses: actions/create-release@v1
+      run: |
+        gh release create v${{ github.run_number }} \
+          --title "Release v${{ github.run_number }}" \
+          --notes "Automated release by GitHub Actions"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ github.run_number }}
-        release_name: Release v${{ github.run_number }}
-        draft: false
-        prerelease: false
 
     - name: 📤 Upload APK to GitHub Release
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: actions/upload-release-asset@v1
+      run: |
+        gh release upload v${{ github.run_number }} \
+          app/build/outputs/apk/release/app-release-unsigned.apk#MCQAutomation-v${{ github.run_number }}.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: app/build/outputs/apk/release/app-release-unsigned.apk
-        asset_name: MCQAutomation-v${{ github.run_number }}.apk
-        asset_content_type: application/vnd.android.package-archive
