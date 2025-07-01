@@ -1,0 +1,78 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ImageButton
+        android:id="@+id/playButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/circular_button_background"
+        android:src="@drawable/ic_play"
+        android:scaleType="centerInside"
+        android:contentDescription="Play" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/circular_button_background"
+        android:src="@drawable/ic_settings"
+        android:scaleType="centerInside"
+        android:contentDescription="Settings" />
+
+    <LinearLayout
+        android:id="@+id/optionButtonsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/optionA"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/circular_button_background"
+            android:src="@drawable/ic_option_a"
+            android:scaleType="centerInside"
+            android:contentDescription="Option A" />
+
+        <ImageButton
+            android:id="@+id/optionB"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/circular_button_background"
+            android:src="@drawable/ic_option_b"
+            android:scaleType="centerInside"
+            android:contentDescription="Option B" />
+
+        <ImageButton
+            android:id="@+id/optionC"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/circular_button_background"
+            android:src="@drawable/ic_option_c"
+            android:scaleType="centerInside"
+            android:contentDescription="Option C" />
+
+        <ImageButton
+            android:id="@+id/optionD"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/circular_button_background"
+            android:src="@drawable/ic_option_d"
+            android:scaleType="centerInside"
+            android:contentDescription="Option D" />
+
+    </LinearLayout>
+
+</LinearLayout>

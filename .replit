@@ -1,0 +1,11 @@
+[workflows]
+runButton = "Build Android APK"
+
+[[workflows.workflow]]
+name = "Build Android APK"
+author = 44468581
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./gradlew assembleDebug"

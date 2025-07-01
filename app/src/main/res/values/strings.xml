@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MCQAutomation</string>
+    <string name="accessibility_service_description">MCQ Automation Service for auto-clicking answers</string>
+</resources>

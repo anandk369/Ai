@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/selectRegionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Screen Region"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capture Resolution:"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/resolutionRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radio480p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="480p" />
+
+            <RadioButton
+                android:id="@+id/radio720p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="720p" />
+
+            <RadioButton
+                android:id="@+id/radio1080p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1080p" />
+
+        </RadioGroup>
+
+        <Switch
+            android:id="@+id/showOptionButtonsSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Fixed Position Buttons"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:id="@+id/positioningButtonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Position Option Buttons:"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/positionOptionA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Position Option A"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/positionOptionB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Position Option B"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/positionOptionC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Position Option C"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/positionOptionD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Position Option D"
+                android:layout_marginBottom="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
