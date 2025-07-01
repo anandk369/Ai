@@ -15,6 +15,10 @@ class AutoClickService : AccessibilityService() {
         suspend fun performClick(x: Float, y: Float): Boolean {
             return instance?.performGestureClick(x, y) ?: false
         }
+
+        fun isServiceEnabled(context: android.content.Context): Boolean {
+            return instance != null
+        }
     }
 
     override fun onServiceConnected() {
