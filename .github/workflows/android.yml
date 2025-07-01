@@ -39,8 +39,22 @@ jobs:
     - name: 🔒 Make gradlew executable
       run: chmod +x ./gradlew
 
-    - name: 📦 Install Android NDK (for .so strip support)
-      run: sdkmanager "ndk;25.2.9519653"
+    - name: 📥 Install Android SDK cmdline-tools
+      run: |
+        mkdir -p "$HOME/android-sdk/cmdline-tools"
+        cd "$HOME/android-sdk/cmdline-tools"
+        curl -o tools.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
+        unzip tools.zip
+        mv cmdline-tools latest
+        cd ~
+
+    - name: ⚙️ Set ANDROID_HOME and Install NDK
+      env:
+        ANDROID_HOME: ${{ github.workspace }}/android-sdk
+        PATH: ${{ github.workspace }}/android-sdk/cmdline-tools/latest/bin:${{ github.workspace }}/android-sdk/platform-tools:${{ github.workspace }}/android-sdk/emulator:$PATH
+      run: |
+        yes | sdkmanager --sdk_root=${{ github.workspace }}/android-sdk --licenses
+        sdkmanager "ndk;25.2.9519653"
 
     - name: 🧱 Build Debug APK
       run: ./gradlew assembleDebug
