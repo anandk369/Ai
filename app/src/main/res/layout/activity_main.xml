@@ -1,28 +1,46 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/statusText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Status:\n• Overlay Permission: ✗\n• Accessibility Service: ✗\n• Floating Button: ✗"
-        android:layout_marginBottom="24dp" />
+        android:text="MCQ Automation App\n\nStatus:\nChecking permissions..."
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="32dp" />
 
     <Button
-        android:id="@+id/btnEnableFloatingButton"
+        android:id="@+id/enableFloatingButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enable Floating Button"
-        android:layout_marginBottom="16dp" />
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp" />
 
     <Button
-        android:id="@+id/btnEnableAccessibilityService"
+        android:id="@+id/enableAccessibilityButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enable Accessibility Service" />
+        android:text="Enable Accessibility Service"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Instructions:\n1. Enable overlay permission for floating button\n2. Enable accessibility service for auto-tap\n3. Open MCQ app and use floating controls"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:layout_marginTop="32dp"
+        android:alpha="0.7" />
 
 </LinearLayout>
