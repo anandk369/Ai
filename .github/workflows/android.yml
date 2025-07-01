@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 permissions:
-  contents: write  # 🔓 Needed for create-release to work
+  contents: write  # Needed for release creation
 
 jobs:
   build:
@@ -39,21 +39,16 @@ jobs:
     - name: 🔒 Make gradlew executable
       run: chmod +x ./gradlew
 
-    - name: 📥 Install Android SDK cmdline-tools
+    - name: 📥 Install Android SDK cmdline-tools & NDK
       run: |
         mkdir -p "$HOME/android-sdk/cmdline-tools"
         cd "$HOME/android-sdk/cmdline-tools"
         curl -o tools.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
         unzip tools.zip
         mv cmdline-tools latest
-        cd ~
-
-    - name: ⚙️ Set ANDROID_HOME and Install NDK
-      env:
-        ANDROID_HOME: ${{ github.workspace }}/android-sdk
-        PATH: ${{ github.workspace }}/android-sdk/cmdline-tools/latest/bin:${{ github.workspace }}/android-sdk/platform-tools:${{ github.workspace }}/android-sdk/emulator:$PATH
-      run: |
-        yes | sdkmanager --sdk_root=${{ github.workspace }}/android-sdk --licenses
+        export ANDROID_HOME=$HOME/android-sdk
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+        echo y | sdkmanager --sdk_root=$ANDROID_HOME --licenses
         sdkmanager "ndk;25.2.9519653"
 
     - name: 🧱 Build Debug APK
