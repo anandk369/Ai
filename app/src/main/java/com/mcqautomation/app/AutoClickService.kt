@@ -2,7 +2,12 @@ package com.mcqautomation.app
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
 import android.graphics.Path
+import android.provider.Settings
+import android.text.TextUtils
 import android.view.accessibility.AccessibilityEvent
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -16,8 +21,29 @@ class AutoClickService : AccessibilityService() {
             return instance?.performGestureClick(x, y) ?: false
         }
 
-        fun isServiceEnabled(context: android.content.Context): Boolean {
-            return instance != null
+        fun isServiceEnabled(context: Context): Boolean {
+            val expectedComponentName = ComponentName(context, AutoClickService::class.java)
+            val enabledServices = Settings.Secure.getString(
+                context.contentResolver,
+                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+            ) ?: return false
+
+            val colonSplitter = TextUtils.SimpleStringSplitter(':')
+            colonSplitter.setString(enabledServices)
+            while (colonSplitter.hasNext()) {
+                val componentName = ComponentName.unflattenFromString(colonSplitter.next())
+                if (componentName != null && componentName == expectedComponentName) {
+                    return true
+                }
+            }
+
+            return false
+        }
+
+        fun openAccessibilitySettings(context: Context) {
+            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
         }
     }
 
