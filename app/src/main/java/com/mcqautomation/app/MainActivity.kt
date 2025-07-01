@@ -4,12 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.TextUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.provider.Settings
-import android.text.TextUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +16,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupButtons()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateStatusText()
     }
 
     private fun setupButtons() {
@@ -47,31 +51,6 @@ class MainActivity : AppCompatActivity() {
     private fun startFloatingButtonService() {
         val intent = Intent(this, FloatingButtonService::class.java)
         startForegroundService(intent)
-
-
-    private fun isServiceEnabled(): Boolean {
-        val accessibilityEnabled = Settings.Secure.getInt(
-            contentResolver,
-            Settings.Secure.ACCESSIBILITY_ENABLED, 0
-        )
-        
-        if (accessibilityEnabled == 1) {
-            val service = "${packageName}/${AutoClickService::class.java.canonicalName}"
-            val enabledServices = Settings.Secure.getString(
-                contentResolver,
-                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-            )
-            
-            return enabledServices?.let {
-                TextUtils.SimpleStringSplitter(':').apply {
-                    setString(it)
-                }.any { it.equals(service, ignoreCase = true) }
-            } ?: false
-        }
-        
-        return false
-    }
-
         Toast.makeText(this, "Floating button service started", Toast.LENGTH_SHORT).show()
     }
 
