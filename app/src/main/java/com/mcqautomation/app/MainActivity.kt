@@ -69,6 +69,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun startFloatingButtonService() {
         try {
+            if (!canDrawOverlays()) {
+                Toast.makeText(this, "Overlay permission required first", Toast.LENGTH_LONG).show()
+                requestOverlayPermission()
+                return
+            }
+            
             val intent = Intent(this, FloatingButtonService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(intent)

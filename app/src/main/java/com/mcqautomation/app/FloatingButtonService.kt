@@ -24,10 +24,10 @@ class FloatingButtonService : Service() {
     private var playButton: ImageButton? = null
     private var settingsButton: ImageButton? = null
     private var optionButtonsContainer: LinearLayout? = null
-    private var optionA: Button? = null
-    private var optionB: Button? = null
-    private var optionC: Button? = null
-    private var optionD: Button? = null
+    private var optionA: ImageButton? = null
+    private var optionB: ImageButton? = null
+    private var optionC: ImageButton? = null
+    private var optionD: ImageButton? = null
 
     private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -53,9 +53,15 @@ class FloatingButtonService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        floatingView?.let { windowManager?.removeView(it) }
-        serviceScope.cancel()
-        isRunning = false
+        try {
+            floatingView?.let { 
+                windowManager?.removeView(it) 
+            }
+            serviceScope.cancel()
+            isRunning = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun createNotificationChannel() {
@@ -71,21 +77,30 @@ class FloatingButtonService : Service() {
     }
 
     private fun createFloatingView() {
-        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        try {
+            windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-        floatingView = LayoutInflater.from(this).inflate(R.layout.floating_buttons_layout, null)
+            floatingView = LayoutInflater.from(this).inflate(R.layout.floating_buttons_layout, null)
 
-        // Initialize views
-        playButton = floatingView?.findViewById(R.id.playButton)
-        settingsButton = floatingView?.findViewById(R.id.settingsButton)
-        optionButtonsContainer = floatingView?.findViewById(R.id.optionButtonsContainer)
-        optionA = floatingView?.findViewById(R.id.optionA)
-        optionB = floatingView?.findViewById(R.id.optionB)
-        optionC = floatingView?.findViewById(R.id.optionC)
-        optionD = floatingView?.findViewById(R.id.optionD)
+            // Initialize views
+            playButton = floatingView?.findViewById(R.id.playButton)
+            settingsButton = floatingView?.findViewById(R.id.settingsButton)
+            optionButtonsContainer = floatingView?.findViewById(R.id.optionButtonsContainer)
+            optionA = floatingView?.findViewById(R.id.optionA)
+            optionB = floatingView?.findViewById(R.id.optionB)
+            optionC = floatingView?.findViewById(R.id.optionC)
+            optionD = floatingView?.findViewById(R.id.optionD)
 
-        setupClickListeners()
-        setupDragging()
+            setupClickListeners()
+            setupDragging()
+            addFloatingViewToWindow()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error creating floating view: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun addFloatingViewToWindow() {
 
         val layoutFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -98,7 +113,7 @@ class FloatingButtonService : Service() {
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             layoutFlag,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
         )
 
@@ -108,28 +123,63 @@ class FloatingButtonService : Service() {
 
         try {
             windowManager?.addView(floatingView, params)
+            Toast.makeText(this, "Floating buttons created successfully", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Error creating floating button: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error adding floating view: ${e.message}", Toast.LENGTH_LONG).show()
             stopSelf()
         }
     }
 
     private fun setupClickListeners() {
         playButton?.setOnClickListener {
-            // Start MCQ automation process
-            processScreen()
+            try {
+                // Start MCQ automation process
+                processScreen()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "Error in play button: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
 
         settingsButton?.setOnClickListener {
-            // Toggle option buttons visibility
-            toggleOptionButtons()
+            try {
+                // Toggle option buttons visibility
+                toggleOptionButtons()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "Error in settings: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        optionA?.setOnClickListener { clickOption("A") }
-        optionB?.setOnClickListener { clickOption("B") }
-        optionC?.setOnClickListener { clickOption("C") }
-        optionD?.setOnClickListener { clickOption("D") }
+        optionA?.setOnClickListener { 
+            try { 
+                clickOption("A") 
+            } catch (e: Exception) { 
+                e.printStackTrace() 
+            }
+        }
+        optionB?.setOnClickListener { 
+            try { 
+                clickOption("B") 
+            } catch (e: Exception) { 
+                e.printStackTrace() 
+            }
+        }
+        optionC?.setOnClickListener { 
+            try { 
+                clickOption("C") 
+            } catch (e: Exception) { 
+                e.printStackTrace() 
+            }
+        }
+        optionD?.setOnClickListener { 
+            try { 
+                clickOption("D") 
+            } catch (e: Exception) { 
+                e.printStackTrace() 
+            }
+        }
     }
 
     private fun toggleOptionButtons() {
